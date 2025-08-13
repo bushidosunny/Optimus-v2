@@ -44,15 +44,45 @@ st.set_page_config(
 def init_components():
     """Initialize system components with caching (excluding auth) - v2"""
     try:
-        components = {
-            'memory': MemoryManager(),
-            'llm': LLMHandler()
-        }
+        # Check for required secrets
+        required_secrets = ['QDRANT_URL', 'QDRANT_API_KEY']
+        missing_secrets = [s for s in required_secrets if not st.secrets.get(s)]
+        
+        if missing_secrets:
+            st.error(f"❌ Missing required secrets: {', '.join(missing_secrets)}")
+            st.info("Please add these in Streamlit Cloud: App Settings → Secrets")
+            st.code("""
+# Required in secrets.toml:
+QDRANT_URL = "https://your-cluster.qdrant.io"
+QDRANT_API_KEY = "your-api-key"
+OPENAI_API_KEY = "sk-..."  # For embeddings
+JWT_SECRET_KEY = "random-secret-key"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "password"
+            """)
+            st.stop()
+        
+        with st.spinner("🚀 Initializing AI Memory System..."):
+            components = {
+                'memory': MemoryManager(),
+                'llm': LLMHandler()
+            }
         logger.info("Components initialized successfully")
         return components
     except Exception as e:
         logger.error(f"Failed to initialize components: {e}")
-        st.error(f"System initialization failed: {str(e)}")
+        st.error(f"❌ System initialization failed: {str(e)}")
+        if "QDRANT" in str(e).upper():
+            st.warning("🔧 Qdrant connection issue. Please check:")
+            st.code(f"""
+Current QDRANT_URL: {st.secrets.get('QDRANT_URL', 'NOT SET')}
+Has API Key: {'✅' if st.secrets.get('QDRANT_API_KEY') else '❌'}
+
+Make sure your Qdrant Cloud cluster is:
+1. Running (not paused)
+2. URL format is correct (https://xxx.qdrant.io)
+3. API key is valid
+            """)
         st.stop()
 
 def get_auth():
@@ -920,8 +950,20 @@ def display_analytics():
 # Main app logic
 def main():
     """Main application entry point"""
+    # Show app is loading
+    st.set_page_config(
+        page_title="Optimus v2 - AI Memory System",
+        page_icon="🧠",
+        layout="wide",
+        initial_sidebar_state="expanded"
+    )
+    
     # Load custom CSS
     load_custom_css()
+    
+    # Check if we're in Streamlit Cloud and show status
+    if st.secrets:
+        st.sidebar.success("✅ Running on Streamlit Cloud")
     
     # Initialize components
     components = init_components()
