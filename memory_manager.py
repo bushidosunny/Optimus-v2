@@ -30,10 +30,15 @@ class MemoryManager:
     
     def __init__(self):
         """Initialize memory manager components"""
+        logger.info("Starting MemoryManager initialization")
         self.init_qdrant()
+        logger.info("Qdrant initialized")
         self.init_mem0()
+        logger.info("Mem0 initialized")
         self.init_embedder()
+        logger.info("Embedder initialized")
         self._setup_monitoring()
+        logger.info("MemoryManager initialization complete")
     
     def init_qdrant(self):
         """Initialize Qdrant client with 2025 enhancements"""
@@ -154,7 +159,9 @@ class MemoryManager:
         """Initialize local embedder with optimization"""
         @st.cache_resource
         def load_embedder():
+            logger.info("Loading SentenceTransformer model...")
             model = SentenceTransformer('all-MiniLM-L6-v2')
+            logger.info("SentenceTransformer model loaded")
             # Enable FP16 for memory efficiency if CUDA available
             if hasattr(model, 'half'):
                 try:
