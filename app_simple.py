@@ -11,8 +11,17 @@ st.set_page_config(
 
 st.title("🧠 Optimus v2 - Deployment Debug")
 
+# Show all available secrets (keys only)
+st.header("0. All Available Secret Keys")
+st.write("These are ALL the keys Streamlit Cloud sees:")
+all_keys = list(st.secrets.keys())
+for key in sorted(all_keys):
+    st.code(key)
+
+st.write(f"Total keys found: {len(all_keys)}")
+
 # Check secrets
-st.header("1. Checking Secrets")
+st.header("1. Checking Required Secrets")
 secrets_to_check = [
     'QDRANT_URL',
     'QDRANT_API_KEY', 
