@@ -1,0 +1,56 @@
+# Optimus - Frozen Requirements
+# Generated: August 2025
+# Python 3.10+ required
+# These are the exact versions that work together
+
+# Core Framework
+streamlit==1.38.0
+pydantic==2.11.7
+pydantic_core==2.33.2
+python-dotenv==1.0.1
+
+# Memory & Vector Database
+mem0ai==0.1.116
+qdrant-client==1.15.1
+numpy==2.0.1
+
+# LLM Framework & Embeddings  
+pydantic-ai==0.7.0
+pydantic-ai-slim==0.7.0
+pydantic-graph==0.7.0
+pydantic-evals==0.7.0
+sentence-transformers==5.1.0
+torch==2.8.0
+transformers==4.55.2
+
+# LLM Providers
+openai==1.99.9
+anthropic==0.64.0
+google-generativeai==0.8.4
+groq==0.31.0
+
+# Authentication & Security
+streamlit-authenticator==0.3.3
+PyJWT==2.9.0
+bcrypt==4.2.0
+cryptography==43.0.1
+
+# Data Processing & Visualization
+pandas==2.2.2
+plotly==6.3.0
+httpx==0.28.1
+httpx-sse==0.4.0
+
+# Monitoring & Reliability
+prometheus_client==0.22.1
+tenacity==8.2.3
+
+# Development Tools
+pytest==7.4.3
+pytest-asyncio==0.23.8
+black==24.8.0
+ruff==0.12.8
+
+# Additional Dependencies (auto-installed)
+extra-streamlit-components==0.1.71
+pydantic-settings==2.10.1

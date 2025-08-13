@@ -1,0 +1,56 @@
+# Optimus - Production Requirements
+# Python 3.10+ required
+# Last updated: August 2025
+
+# Core Framework
+streamlit==1.38.0                  # Web UI framework with WebSocket improvements
+pydantic>=2.10.0,<3.0.0           # Data validation (satisfies all package requirements)
+python-dotenv==1.0.1               # Environment variable management
+
+# Memory & Vector Database
+mem0ai                             # Latest version for memory management
+qdrant-client                      # Latest version for vector database
+numpy                              # Latest version for array operations
+
+# LLM Framework & Embeddings  
+pydantic-ai                        # Latest version for type-safe LLM interactions
+sentence-transformers              # Latest version for embeddings
+torch                              # Latest PyTorch version
+transformers                       # Latest transformers version
+
+# LLM Providers (all optional - install what you need)
+openai                             # Latest OpenAI SDK
+anthropic                          # Latest Anthropic SDK
+google-generativeai                # Latest Google AI SDK
+groq                               # Latest Groq SDK
+# mistralai                        # Mistral models (commented out per request)
+
+# Authentication & Security
+streamlit-authenticator            # Latest authentication library
+PyJWT                              # Latest JWT library
+bcrypt                             # Latest bcrypt version
+cryptography                       # Latest cryptography version
+
+# Data Processing & Visualization
+pandas                             # Latest pandas version
+plotly                             # Latest plotly version
+httpx                              # Latest httpx version
+
+# Monitoring & Reliability
+prometheus-client                  # Latest metrics library
+tenacity                           # Latest retry library
+
+# Development Tools (optional)
+pytest                             # Latest testing framework
+pytest-asyncio                     # Latest async test support
+black                              # Latest code formatter
+ruff                               # Latest Python linter
+
+# Additional Dependencies (auto-installed)
+# These will be installed automatically as dependencies:
+# - grpcio (for qdrant-client)
+# - protobuf (for various packages)
+# - requests (for API calls)
+# - urllib3 (for HTTP handling)
+# - tqdm (for progress bars)
+# - huggingface-hub (for model downloads)

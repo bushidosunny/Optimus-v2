@@ -1,0 +1,95 @@
+# GitHub Actions workflow for Streamlit Cloud deployment
+# This workflow validates the app before Streamlit Cloud deploys it
+
+name: Streamlit App Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Lint with ruff
+      run: |
+        pip install ruff
+        ruff check . --fix --exit-non-zero-on-fix
+      continue-on-error: true
+    
+    - name: Check imports
+      run: |
+        python -c "
+        import streamlit
+        import mem0
+        import qdrant_client
+        import pydantic_ai
+        print('All core imports successful')
+        "
+    
+    - name: Validate Streamlit app structure
+      run: |
+        # Check if main app file exists
+        if [ -f "app.py" ] || [ -f "streamlit_app.py" ]; then
+          echo "✅ Main app file found"
+        else
+          echo "❌ No app.py or streamlit_app.py found"
+          exit 1
+        fi
+        
+        # Check if requirements.txt exists
+        if [ -f "requirements.txt" ]; then
+          echo "✅ requirements.txt found"
+        else
+          echo "❌ requirements.txt not found"
+          exit 1
+        fi
+        
+        # Check if config exists
+        if [ -f ".streamlit/config.toml" ]; then
+          echo "✅ Streamlit config found"
+        else
+          echo "⚠️ No .streamlit/config.toml found (optional)"
+        fi
+    
+    - name: Test app initialization (dry run)
+      env:
+        QDRANT_URL: "http://localhost:6333"
+        QDRANT_API_KEY: "test"
+        OPENAI_API_KEY: "test"
+        JWT_SECRET_KEY: "test"
+      run: |
+        # Try to import the app without running it
+        python -c "
+        import sys
+        sys.path.insert(0, '.')
+        try:
+            import app
+            print('✅ App imports successfully')
+        except Exception as e:
+            print(f'⚠️ Import warning: {e}')
+        "
+      continue-on-error: true

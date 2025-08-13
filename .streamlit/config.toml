@@ -1,0 +1,27 @@
+[theme]
+primaryColor = "#FF6B6B"
+backgroundColor = "#0E1117"
+secondaryBackgroundColor = "#262730"
+textColor = "#FAFAFA"
+
+[server]
+maxUploadSize = 100  # Increased for larger file uploads
+enableCORS = true  # Must be true when enableXsrfProtection is true
+enableXsrfProtection = true
+enableStaticServing = false  # Disabled since no static folder exists
+maxMessageSize = 200  # Increased for larger responses
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"  # New: For security
+
+[runner]
+magicEnabled = true
+
+[client]
+showErrorDetails = true  # For development, set to false in production
+toolbarMode = "minimal"  # New: Cleaner UI
+
+[logger]
+level = "info"
+messageFormat = "%(asctime)s %(levelname)s: %(message)s"
