@@ -1,6 +1,6 @@
 # Streamlit Cloud entry point
-# Temporarily using debug app to diagnose deployment issues
-import app_simple
+# This file is used by Streamlit Cloud to identify the main app file
+import app
 
-# Once debug passes, switch back to:
-# import app
+# The app.py file runs main() automatically at the bottom
+# So we just need to import it
