@@ -159,19 +159,16 @@ class MemoryManager:
         """Initialize local embedder with optimization"""
         @st.cache_resource
         def load_embedder():
-            logger.info("Loading SentenceTransformer model...")
-            model = SentenceTransformer('all-MiniLM-L6-v2')
-            logger.info("SentenceTransformer model loaded")
-            # Enable FP16 for memory efficiency if CUDA available
-            if hasattr(model, 'half'):
-                try:
-                    import torch
-                    if torch.cuda.is_available():
-                        model = model.half()
-                        logger.info("Enabled FP16 for embedder")
-                except ImportError:
-                    pass
-            return model
+            try:
+                logger.info("Loading SentenceTransformer model...")
+                # Use a smaller, faster model for cloud deployment
+                model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
+                logger.info("SentenceTransformer model loaded")
+                return model
+            except Exception as e:
+                logger.warning(f"Failed to load SentenceTransformer: {e}")
+                logger.info("Embedder will use OpenAI embeddings instead")
+                return None
         
         self.embedder = load_embedder()
     
@@ -703,6 +700,10 @@ class MemoryManager:
             
             # Extract contents and generate embeddings
             contents = [m.content for m in memories]
+            
+            if not self.embedder:
+                logger.warning("Embedder not available, skipping consolidation")
+                return {"total": len(memories), "removed": 0, "merged": 0, "error": "Embedder not available"}
             
             embedding_start = datetime.now()
             embeddings = self.embedder.encode(contents, batch_size=32, show_progress_bar=False)

@@ -950,24 +950,31 @@ def display_analytics():
 # Main app logic
 def main():
     """Main application entry point"""
-    # Show app is loading
-    st.set_page_config(
-        page_title="Optimus v2 - AI Memory System",
-        page_icon="🧠",
-        layout="wide",
-        initial_sidebar_state="expanded"
-    )
-    
-    # Load custom CSS
-    load_custom_css()
-    
-    # Check if we're in Streamlit Cloud and show status
-    if st.secrets:
-        st.sidebar.success("✅ Running on Streamlit Cloud")
-    
-    # Initialize components
-    components = init_components()
-    st.session_state.components = components
+    try:
+        # Show app is loading
+        st.set_page_config(
+            page_title="Optimus v2 - AI Memory System",
+            page_icon="🧠",
+            layout="wide",
+            initial_sidebar_state="expanded"
+        )
+        
+        # Load custom CSS
+        load_custom_css()
+        
+        # Check if we're in Streamlit Cloud and show status
+        if st.secrets:
+            st.sidebar.success("✅ Running on Streamlit Cloud")
+        
+        # Initialize components
+        components = init_components()
+        st.session_state.components = components
+    except Exception as e:
+        st.error(f"❌ Application failed to start: {str(e)}")
+        st.error(f"Error type: {type(e).__name__}")
+        import traceback
+        st.code(traceback.format_exc())
+        st.stop()
     
     # Authentication (not cached to handle fresh browser sessions)
     auth = get_auth()
