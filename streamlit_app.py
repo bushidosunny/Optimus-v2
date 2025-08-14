@@ -1,6 +1,6 @@
 # Streamlit Cloud entry point
-# This file is used by Streamlit Cloud to identify the main app file
-import app
+# Temporarily using minimal app to bypass initialization issues
+import app_minimal
 
-# The app.py file runs main() automatically at the bottom
-# So we just need to import it
+# Once working, switch back to:
+# import app
