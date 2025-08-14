@@ -1,3 +1,3 @@
 # Streamlit Cloud entry point
-# Progressive working app
-import app_working
+# Fixed version with tabs
+import app_fixed
