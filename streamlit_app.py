@@ -1,3 +1,3 @@
 # Streamlit Cloud entry point
-# Test if Streamlit works at all
-import test_simple
+# Progressive working app
+import app_working
