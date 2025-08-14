@@ -1,3 +1,3 @@
 # Streamlit Cloud entry point
-# Fixed version with tabs
-import app_fixed
+# Version without session state issues
+import app_no_state
