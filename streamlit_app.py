@@ -1,3 +1,3 @@
 # Streamlit Cloud entry point
-# Version without session state issues
-import app_no_state
+# Simplest version - no auth, no session state
+import app_noauth
