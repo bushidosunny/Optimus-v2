@@ -35,17 +35,22 @@ if not st.session_state.authenticated:
                 st.error("❌ Invalid credentials")
 else:
     # Main interface
-    st.sidebar.success(f"✅ Logged in as {st.secrets.get('ADMIN_USERNAME')}")
+    try:
+        st.sidebar.success(f"✅ Logged in as {st.secrets.get('ADMIN_USERNAME')}")
+        
+        if st.sidebar.button("🚪 Logout"):
+            st.session_state.authenticated = False
+            st.rerun()
+        
+        st.write("Debug: Creating tabs...")
+        
+        # Tabs
+        tab1, tab2, tab3 = st.tabs(["💬 Chat", "🧠 Memories", "⚙️ Settings"])
+        
+        st.write("Debug: Tabs created successfully")
     
-    if st.sidebar.button("🚪 Logout"):
-        st.session_state.authenticated = False
-        st.rerun()
-    
-    # Tabs
-    tab1, tab2, tab3 = st.tabs(["💬 Chat", "🧠 Memories", "⚙️ Settings"])
-    
-    with tab1:
-        st.markdown("## 💬 Chat Interface")
+        with tab1:
+            st.markdown("## 💬 Chat Interface")
         
         # Initialize session state for messages
         if 'messages' not in st.session_state:

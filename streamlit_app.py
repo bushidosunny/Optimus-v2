@@ -1,3 +1,3 @@
 # Streamlit Cloud entry point
-# Import the minimal app directly
-import app_minimal
+# Import the fixed minimal app
+import app_minimal_fixed
